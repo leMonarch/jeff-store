@@ -10,4 +10,5 @@ export interface Product {
   active?: boolean;
   medium?: string;
   dimensions?: string;
+  sendNewsletter?: boolean; // Indique si la newsletter doit être envoyée pour ce produit
 }

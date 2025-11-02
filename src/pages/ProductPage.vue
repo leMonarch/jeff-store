@@ -13,7 +13,7 @@
           <div class="text-3xl text-blue-600 font-bold mb-6">
             {{ formatPrice(product.price) }}
           </div>
-          
+
           <div class="mb-4 text-sm text-gray-600 space-y-2">
             <div v-if="product.medium" class="flex items-center">
               <span class="font-semibold mr-2">Medium:</span>
@@ -24,11 +24,8 @@
               <span>{{ product.dimensions }}</span>
             </div>
           </div>
-          
+
           <p class="text-gray-600 mb-6">{{ product.description }}</p>
-          <button @click="cartStore.addItem(product)" class="btn btn-primary">
-            Ajouter au panier
-          </button>
         </div>
       </div>
       <div v-else class="text-center py-12">
@@ -41,13 +38,11 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import { useProductsStore } from "../store/products";
-import { useCartStore } from "../store/cart";
 import { formatPrice } from "../utils/formatPrice";
 import Navbar from "../components/Navbar.vue";
 
 const route = useRoute();
 const productsStore = useProductsStore();
-const cartStore = useCartStore();
 
 const product = productsStore.products.find((p) => p.id === route.params.id);
 </script>
