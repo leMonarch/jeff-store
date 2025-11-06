@@ -1,0 +1,86 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "favorites": "Favoris",
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "addProduct": "Ajouter impression",
+    "newsletter": "Newsletter"
+  },
+  "product": {
+    "add": "Ajouter une impression numérique",
+    "name": "Nom",
+    "nameFr": "Nom (Français)",
+    "nameEn": "Nom (Anglais)",
+    "description": "Description",
+    "descriptionFr": "Description (Français)",
+    "descriptionEn": "Description (Anglais)",
+    "price": "Prix",
+    "category": "Catégorie",
+    "categoryFr": "Catégorie (Français)",
+    "categoryEn": "Catégorie (Anglais)",
+    "medium": "Medium",
+    "mediumFr": "Medium (Français)",
+    "mediumEn": "Medium (Anglais)",
+    "dimensions": "Dimensions",
+    "stock": "Stock",
+    "active": "Actif",
+    "sendNewsletter": "Envoyer la newsletter",
+    "uploadImage": "Télécharger une image",
+    "submit": "Ajouter l'impression",
+    "notFound": "Produit non trouvé",
+    "loading": "Chargement...",
+    "clickToZoom": "Cliquez pour zoomer"
+  },
+  "common": {
+    "welcome": "Bienvenue sur Jeff Gallery",
+    "subtitle": "Découvrez notre sélection d'impressions numériques de qualité",
+    "popular": "Impressions numériques populaires",
+    "newsletter": {
+      "title": "Restez informé",
+      "description": "Inscrivez-vous à notre newsletter pour être alerté dès qu'une nouvelle impression numérique est ajoutée",
+      "subscribe": "S'inscrire",
+      "subscribing": "Inscription...",
+      "success": "Merci ! Vous êtes maintenant inscrit à la newsletter.",
+      "error": "Une erreur est survenue lors de l'inscription."
+    }
+  },
+  "admin": {
+    "title": "Ajouter une impression numérique",
+    "manageNewsletter": "Gérer la newsletter",
+    "form": {
+      "required": "Ce champ est requis",
+      "imageRequired": "Veuillez sélectionner une image",
+      "success": "Impression numérique ajoutée avec succès !",
+      "error": "Une erreur est survenue lors de l'ajout"
+    }
+  },
+  "favorites": {
+    "title": "Mes Favoris",
+    "empty": "Vous n'avez pas encore de favoris",
+    "discover": "Découvrir les impressions",
+    "mustLogin": "Vous devez être connecté pour voir vos favoris"
+  },
+  "auth": {
+    "login": "Connexion",
+    "register": "Créer un compte",
+    "email": "Email",
+    "password": "Mot de passe",
+    "name": "Nom",
+    "noAccount": "Pas encore de compte ?",
+    "hasAccount": "Déjà un compte ?",
+    "emailPlaceholder": "Votre adresse email",
+    "passwordPlaceholder": "Mot de passe",
+    "namePlaceholder": "Votre nom",
+    "connect": "Se connecter",
+    "passwordMismatch": "Les mots de passe ne correspondent pas"
+  },
+  "lightbox": {
+    "close": "Fermer",
+    "zoomIn": "Zoomer",
+    "zoomOut": "Dézoomer",
+    "reset": "Reset",
+    "instructions": "Molette de la souris pour zoomer • Échap pour fermer"
+  }
+}
+

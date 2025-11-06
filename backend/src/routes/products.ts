@@ -84,37 +84,62 @@ router.get("/:id", async (req, res) => {
 router.post("/", authMiddleware, adminMiddleware, async (req, res) => {
   try {
     const {
-      name,
-      description,
+      // Traductions françaises
+      nameFr,
+      descriptionFr,
+      categoryFr,
+      mediumFr,
+      // Traductions anglaises
+      nameEn,
+      descriptionEn,
+      categoryEn,
+      mediumEn,
+      // Champs communs
       price,
       imageUrl,
-      category,
       stock,
       active,
-      medium,
       dimensions,
       sendNewsletter,
     } = req.body;
 
     // Validation
-    if (!name || !price || !category) {
+    if (!nameFr || !nameEn || !price || !categoryFr || !categoryEn) {
       return res.status(400).json({
-        error: "Nom, prix et catégorie sont requis",
+        error: "Nom (FR et EN), prix et catégorie (FR et EN) sont requis",
       });
     }
 
+    // Créer le produit avec ses traductions
     const product = await prisma.product.create({
       data: {
-        name,
-        description: description || null,
         price: parseFloat(price),
         imageUrl: imageUrl || null,
-        category,
         stock: parseInt(stock) || 0,
         active: active !== undefined ? active : true,
-        medium: medium || null,
         dimensions: dimensions || null,
         sendNewsletter: sendNewsletter || false,
+        translations: {
+          create: [
+            {
+              language: "fr",
+              name: nameFr,
+              description: descriptionFr || null,
+              category: categoryFr,
+              medium: mediumFr || null,
+            },
+            {
+              language: "en",
+              name: nameEn,
+              description: descriptionEn || null,
+              category: categoryEn,
+              medium: mediumEn || null,
+            },
+          ],
+        },
+      },
+      include: {
+        translations: true,
       },
     });
 
@@ -129,26 +154,32 @@ router.post("/", authMiddleware, adminMiddleware, async (req, res) => {
 
         if (subscribers.length > 0) {
           const emails = subscribers.map((s) => s.email);
-          const htmlContent = generateProductNewsletterHTML({
-            name: product.name,
-            description: product.description,
-            price: product.price.toString(),
-            imageUrl: product.imageUrl,
-            category: product.category,
-          });
+          // Utiliser la traduction française pour la newsletter
+          const frTranslation = product.translations.find((t) => t.language === "fr");
+          if (frTranslation) {
+            const htmlContent = generateProductNewsletterHTML({
+              name: frTranslation.name,
+              description: frTranslation.description,
+              price: product.price.toString(),
+              imageUrl: product.imageUrl,
+              category: frTranslation.category,
+            });
 
-          // Envoyer la newsletter en arrière-plan (ne pas bloquer la réponse)
-          sendNewsletterToSubscribers(
-            emails,
-            `Nouvelle impression disponible : ${product.name}`,
-            htmlContent
-          ).then((result) => {
-            console.log(`✅ Newsletter envoyée pour le produit "${product.name}": ${result.success} succès, ${result.failed} échecs`);
-          }).catch((error) => {
-            console.error(`❌ Erreur lors de l'envoi de la newsletter pour "${product.name}":`, error);
-          });
+            // Envoyer la newsletter en arrière-plan (ne pas bloquer la réponse)
+            sendNewsletterToSubscribers(
+              emails,
+              `Nouvelle impression disponible : ${frTranslation.name}`,
+              htmlContent
+            ).then((result) => {
+              console.log(`✅ Newsletter envoyée pour le produit "${frTranslation.name}": ${result.success} succès, ${result.failed} échecs`);
+            }).catch((error) => {
+              console.error(`❌ Erreur lors de l'envoi de la newsletter pour "${frTranslation.name}":`, error);
+            });
+          }
         } else {
-          console.log(`⚠️  Aucun abonné actif pour envoyer la newsletter du produit "${product.name}"`);
+          const frTranslation = product.translations.find((t) => t.language === "fr");
+          const productName = frTranslation?.name || "produit";
+          console.log(`⚠️  Aucun abonné actif pour envoyer la newsletter du produit "${productName}"`);
         }
       } catch (error: any) {
         // Ne pas faire échouer la création du produit si l'envoi de newsletter échoue

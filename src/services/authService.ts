@@ -52,10 +52,15 @@ class AuthService {
   }
 
   async login(email: string, password: string): Promise<LoginResponse> {
-    const response = await apiService.post<LoginResponse>("/auth/login", {
-      email,
-      password,
-    });
+    // Route auth n'utilise pas la langue
+    const response = await apiService.post<LoginResponse>(
+      "/auth/login",
+      {
+        email,
+        password,
+      },
+      false // Pas de langue pour les routes auth
+    );
     this.setToken(response.token);
     this.setUser(response.user);
     return response;
@@ -66,18 +71,24 @@ class AuthService {
     password: string,
     name: string
   ): Promise<RegisterResponse> {
-    const response = await apiService.post<RegisterResponse>("/auth/register", {
-      email,
-      password,
-      name,
-    });
+    // Route auth n'utilise pas la langue
+    const response = await apiService.post<RegisterResponse>(
+      "/auth/register",
+      {
+        email,
+        password,
+        name,
+      },
+      false // Pas de langue pour les routes auth
+    );
     this.setToken(response.token);
     this.setUser(response.user);
     return response;
   }
 
   async getCurrentUser(): Promise<User> {
-    return apiService.get<User>("/auth/me");
+    // Route auth n'utilise pas la langue
+    return apiService.get<User>("/auth/me", false);
   }
 
   async logout(): Promise<void> {

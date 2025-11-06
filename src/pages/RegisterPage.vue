@@ -3,26 +3,26 @@
     <Navbar />
     <main class="flex items-center justify-center px-4 py-8">
       <div class="card w-full max-w-md">
-        <h1 class="text-3xl font-bold mb-8 text-center">Créer un compte</h1>
+        <h1 class="text-3xl font-bold mb-8 text-center">{{ $t('auth.register') }}</h1>
         <form @submit.prevent="register" class="space-y-4">
           <input
             v-model="displayName"
             type="text"
-            placeholder="Nom complet"
+            :placeholder="$t('auth.namePlaceholder')"
             required
             class="input"
           />
           <input
             v-model="email"
             type="email"
-            placeholder="Email"
+            :placeholder="$t('auth.emailPlaceholder')"
             required
             class="input"
           />
           <input
             v-model="password"
             type="password"
-            placeholder="Mot de passe (min. 6 caractères)"
+            :placeholder="$t('auth.passwordPlaceholder') + ' (min. 6 caractères)'"
             required
             minlength="6"
             class="input"
@@ -30,13 +30,13 @@
           <input
             v-model="confirmPassword"
             type="password"
-            placeholder="Confirmer le mot de passe"
+            :placeholder="$t('auth.passwordPlaceholder')"
             required
             class="input"
           />
 
           <div v-if="passwordMismatch" class="text-sm text-red-600">
-            Les mots de passe ne correspondent pas
+            {{ $t('auth.passwordMismatch') || 'Les mots de passe ne correspondent pas' }}
           </div>
 
           <button
@@ -44,7 +44,7 @@
             :disabled="passwordMismatch"
             class="btn btn-primary w-full"
           >
-            S'inscrire
+            {{ $t('auth.register') }}
           </button>
         </form>
 
@@ -52,9 +52,9 @@
 
         <div class="text-center mt-6">
           <p class="text-gray-600">
-            Déjà un compte ?
+            {{ $t('auth.hasAccount') }}
             <router-link to="/login" class="text-blue-600 hover:underline">
-              Se connecter
+              {{ $t('auth.login') }}
             </router-link>
           </p>
         </div>
@@ -66,8 +66,11 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 import { useUserStore } from "../store/user";
 import Navbar from "../components/Navbar.vue";
+
+const { t: $t } = useI18n();
 
 const router = useRouter();
 const userStore = useUserStore();

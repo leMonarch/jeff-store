@@ -22,7 +22,8 @@ export interface SubscribersResponse {
  * S'abonner à la newsletter
  */
 export async function subscribeToNewsletter(email: string): Promise<NewsletterResponse> {
-  return apiService.post<NewsletterResponse>("/newsletter/subscribe", { email });
+  // Route newsletter n'utilise pas la langue
+  return apiService.post<NewsletterResponse>("/newsletter/subscribe", { email }, false);
 }
 
 /**
@@ -30,14 +31,16 @@ export async function subscribeToNewsletter(email: string): Promise<NewsletterRe
  */
 export async function unsubscribeFromNewsletter(email: string): Promise<void> {
   const encodedEmail = encodeURIComponent(email);
-  return apiService.delete<void>(`/newsletter/unsubscribe/${encodedEmail}`);
+  // Route newsletter n'utilise pas la langue
+  return apiService.delete<void>(`/newsletter/unsubscribe/${encodedEmail}`, false);
 }
 
 /**
  * Récupérer tous les abonnés actifs (Admin uniquement)
  */
 export async function getActiveSubscribers(): Promise<NewsletterSubscriber[]> {
-  const response = await apiService.get<SubscribersResponse>("/newsletter/subscribers?active=true");
+  // Route newsletter n'utilise pas la langue
+  const response = await apiService.get<SubscribersResponse>("/newsletter/subscribers?active=true", false);
   return response.subscribers;
 }
 
@@ -45,7 +48,8 @@ export async function getActiveSubscribers(): Promise<NewsletterSubscriber[]> {
  * Obtenir le nombre d'abonnés actifs
  */
 export async function getSubscriberCount(): Promise<number> {
-  const response = await apiService.get<{ count: number }>("/newsletter/count");
+  // Route newsletter n'utilise pas la langue
+  const response = await apiService.get<{ count: number }>("/newsletter/count", false);
   return response.count;
 }
 
@@ -56,6 +60,7 @@ export async function sendManualNewsletter(data: {
   subject: string;
   content: string;
 }): Promise<{ message: string; total: number; success: number; failed: number }> {
-  return apiService.post("/newsletter/send", data);
+  // Route newsletter n'utilise pas la langue
+  return apiService.post("/newsletter/send", data, false);
 }
 

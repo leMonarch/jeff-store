@@ -1,5 +1,18 @@
 // Service API de base pour communiquer avec le backend Express
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+const BASE_API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+
+// Obtenir l'URL avec la langue pour les routes de produits
+const getApiBaseUrl = (useLanguage: boolean = true): string => {
+  if (!useLanguage) {
+    return BASE_API_URL;
+  }
+  
+  // Récupérer la langue depuis localStorage ou utiliser 'fr' par défaut
+  const locale = localStorage.getItem("locale") || "fr";
+  // Enlever /api de la fin si présent, puis ajouter /api/{lang}
+  const baseWithoutApi = BASE_API_URL.replace(/\/api$/, "");
+  return `${baseWithoutApi}/api/${locale}`;
+};
 
 export interface ApiError {
   error: string;
@@ -13,7 +26,8 @@ class ApiService {
 
   private async request<T>(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit = {},
+    useLanguage: boolean = true
   ): Promise<T> {
     const token = this.getAuthToken();
     const headers: HeadersInit = {
@@ -25,7 +39,8 @@ class ApiService {
       headers["Authorization"] = `Bearer ${token}`;
     }
 
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    const apiBaseUrl = getApiBaseUrl(useLanguage);
+    const response = await fetch(`${apiBaseUrl}${endpoint}`, {
       ...options,
       headers,
     });
@@ -45,26 +60,34 @@ class ApiService {
     return response.json();
   }
 
-  async get<T>(endpoint: string): Promise<T> {
-    return this.request<T>(endpoint, { method: "GET" });
+  async get<T>(endpoint: string, useLanguage: boolean = true): Promise<T> {
+    return this.request<T>(endpoint, { method: "GET" }, useLanguage);
   }
 
-  async post<T>(endpoint: string, data?: any): Promise<T> {
-    return this.request<T>(endpoint, {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
+  async post<T>(endpoint: string, data?: any, useLanguage: boolean = true): Promise<T> {
+    return this.request<T>(
+      endpoint,
+      {
+        method: "POST",
+        body: JSON.stringify(data),
+      },
+      useLanguage
+    );
   }
 
-  async put<T>(endpoint: string, data?: any): Promise<T> {
-    return this.request<T>(endpoint, {
-      method: "PUT",
-      body: JSON.stringify(data),
-    });
+  async put<T>(endpoint: string, data?: any, useLanguage: boolean = true): Promise<T> {
+    return this.request<T>(
+      endpoint,
+      {
+        method: "PUT",
+        body: JSON.stringify(data),
+      },
+      useLanguage
+    );
   }
 
-  async delete<T>(endpoint: string): Promise<T> {
-    return this.request<T>(endpoint, { method: "DELETE" });
+  async delete<T>(endpoint: string, useLanguage: boolean = true): Promise<T> {
+    return this.request<T>(endpoint, { method: "DELETE" }, useLanguage);
   }
 
   // Pour l'upload de fichiers
@@ -78,7 +101,9 @@ class ApiService {
       headers["Authorization"] = `Bearer ${token}`;
     }
 
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    // Pour l'upload, on utilise l'URL de base sans langue (route commune)
+    const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+    const response = await fetch(`${baseUrl}${endpoint}`, {
       method: "POST",
       headers,
       body: formData,

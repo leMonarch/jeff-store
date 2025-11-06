@@ -5,25 +5,25 @@
       <div
         class="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg p-12 mb-12 text-center"
       >
-        <h1 class="text-5xl font-bold mb-4">Bienvenue sur Jeff Gallery</h1>
+        <h1 class="text-5xl font-bold mb-4">{{ $t('common.welcome') }}</h1>
         <p class="text-xl mb-8">
-          Découvrez notre sélection d'impressions numériques de qualité
+          {{ $t('common.subtitle') }}
         </p>
         <router-link
           to="/"
           class="btn bg-white text-blue-600 hover:bg-gray-100"
         >
-          Découvrir nos impressions numériques
+          {{ $t('common.subtitle') }}
         </router-link>
       </div>
 
       <div v-if="productsStore.loading" class="text-center py-12">
-        <div class="text-gray-500">Chargement...</div>
+        <div class="text-gray-500">{{ $t('product.loading') }}</div>
       </div>
 
       <div v-else>
         <h2 class="text-3xl font-bold mb-8">
-          Impressions numériques populaires
+          {{ $t('common.popular') }}
         </h2>
         <ProductList />
       </div>
@@ -32,10 +32,9 @@
       <div
         class="mt-16 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg p-8 text-center"
       >
-        <h2 class="text-3xl font-bold mb-4">Restez informé</h2>
+        <h2 class="text-3xl font-bold mb-4">{{ $t('common.newsletter.title') }}</h2>
         <p class="text-lg mb-6">
-          Inscrivez-vous à notre newsletter pour être alerté dès qu'une nouvelle
-          impression numérique est ajoutée
+          {{ $t('common.newsletter.description') }}
         </p>
         <form @submit.prevent="handleNewsletterSubmit" class="max-w-md mx-auto">
           <div
@@ -55,7 +54,7 @@
               v-model="newsletterEmail"
               type="email"
               required
-              placeholder="Votre adresse email"
+              :placeholder="$t('auth.emailPlaceholder')"
               class="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:ring-2 focus:ring-white focus:outline-none"
             />
             <button
@@ -63,8 +62,8 @@
               :disabled="newsletterSubmitting"
               class="px-6 py-3 bg-white text-purple-600 font-semibold rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <span v-if="newsletterSubmitting">Inscription...</span>
-              <span v-else>S'inscrire</span>
+              <span v-if="newsletterSubmitting">{{ $t('common.newsletter.subscribing') }}</span>
+              <span v-else>{{ $t('common.newsletter.subscribe') }}</span>
             </button>
           </div>
         </form>
@@ -75,10 +74,13 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
+import { useI18n } from "vue-i18n";
 import { useProductsStore } from "../store/products";
 import { subscribeToNewsletter } from "../services/newsletterService";
 import Navbar from "../components/Navbar.vue";
 import ProductList from "../components/ProductList.vue";
+
+const { t: $t } = useI18n();
 
 const productsStore = useProductsStore();
 
@@ -94,12 +96,11 @@ async function handleNewsletterSubmit() {
 
   try {
     await subscribeToNewsletter(newsletterEmail.value);
-    newsletterSuccess.value =
-      "Merci ! Vous êtes maintenant inscrit à la newsletter.";
+    newsletterSuccess.value = $t('common.newsletter.success');
     newsletterEmail.value = "";
   } catch (error: any) {
     newsletterError.value =
-      error.message || "Une erreur est survenue lors de l'inscription.";
+      error.message || $t('common.newsletter.error');
   } finally {
     newsletterSubmitting.value = false;
   }

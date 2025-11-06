@@ -14,7 +14,7 @@
             class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 pointer-events-none"
           >
             <div class="text-white bg-black bg-opacity-50 px-4 py-2 rounded-lg text-sm">
-              Cliquez pour zoomer
+              {{ $t('product.clickToZoom') }}
             </div>
           </div>
         </div>
@@ -26,11 +26,11 @@
 
           <div class="mb-4 text-sm text-gray-600 space-y-2">
             <div v-if="product.medium" class="flex items-center">
-              <span class="font-semibold mr-2">Medium:</span>
+              <span class="font-semibold mr-2">{{ $t('product.medium') }}:</span>
               <span>{{ product.medium }}</span>
             </div>
             <div v-if="product.dimensions" class="flex items-center">
-              <span class="font-semibold mr-2">Dimensions:</span>
+              <span class="font-semibold mr-2">{{ $t('product.dimensions') }}:</span>
               <span>{{ product.dimensions }}</span>
             </div>
           </div>
@@ -39,7 +39,7 @@
         </div>
       </div>
       <div v-else class="text-center py-12">
-        <p class="text-gray-500">Produit non trouvé</p>
+        <p class="text-gray-500">{{ $t('product.notFound') }}</p>
       </div>
     </main>
 
@@ -79,7 +79,7 @@
         <button
           @click="zoomIn"
           class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-2 rounded-lg transition-all"
-          aria-label="Zoomer"
+          :aria-label="$t('lightbox.zoomIn')"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -93,7 +93,7 @@
         <button
           @click="zoomOut"
           class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-2 rounded-lg transition-all"
-          aria-label="Dézoomer"
+          :aria-label="$t('lightbox.zoomOut')"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -107,9 +107,9 @@
         <button
           @click="resetZoom"
           class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-2 rounded-lg transition-all text-xs"
-          aria-label="Réinitialiser le zoom"
+          :aria-label="$t('lightbox.reset')"
         >
-          Reset
+          {{ $t('lightbox.reset') }}
         </button>
         <div class="bg-black bg-opacity-50 text-white px-3 py-1 rounded text-sm text-center">
           {{ Math.round(zoomLevel * 100) }}%
@@ -144,7 +144,7 @@
       <div
         class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white text-sm bg-black bg-opacity-50 px-4 py-2 rounded-lg"
       >
-        <p>Molette de la souris pour zoomer • Échap pour fermer</p>
+        <p>{{ $t('lightbox.instructions') }}</p>
       </div>
     </div>
   </div>
@@ -153,9 +153,12 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
+import { useI18n } from "vue-i18n";
 import { useProductsStore } from "../store/products";
 import { formatPrice } from "../utils/formatPrice";
 import Navbar from "../components/Navbar.vue";
+
+const { t: $t } = useI18n();
 
 const route = useRoute();
 const productsStore = useProductsStore();

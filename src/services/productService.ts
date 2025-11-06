@@ -2,8 +2,9 @@ import { apiService } from "./apiService";
 import type { Product } from "../types/Product";
 
 export async function fetchProducts(category?: string): Promise<Product[]> {
+  // Les routes produits utilisent la langue automatiquement via apiService
   const endpoint = category ? `/products?category=${category}` : "/products";
-  const products = await apiService.get<Product[]>(endpoint);
+  const products = await apiService.get<Product[]>(endpoint, true); // true = utiliser la langue
   // Convertir les IDs numériques en strings pour compatibilité avec le frontend
   return products.map((p) => ({
     ...p,
@@ -13,7 +14,8 @@ export async function fetchProducts(category?: string): Promise<Product[]> {
 }
 
 export async function fetchProduct(id: string): Promise<Product> {
-  const product = await apiService.get<Product>(`/products/${id}`);
+  // Les routes produits utilisent la langue automatiquement via apiService
+  const product = await apiService.get<Product>(`/products/${id}`, true); // true = utiliser la langue
   return {
     ...product,
     id: product.id.toString(),

@@ -1,0 +1,86 @@
+{
+  "nav": {
+    "home": "Home",
+    "favorites": "Favorites",
+    "login": "Login",
+    "logout": "Logout",
+    "addProduct": "Add print",
+    "newsletter": "Newsletter"
+  },
+  "product": {
+    "add": "Add a digital print",
+    "name": "Name",
+    "nameFr": "Name (French)",
+    "nameEn": "Name (English)",
+    "description": "Description",
+    "descriptionFr": "Description (French)",
+    "descriptionEn": "Description (English)",
+    "price": "Price",
+    "category": "Category",
+    "categoryFr": "Category (French)",
+    "categoryEn": "Category (English)",
+    "medium": "Medium",
+    "mediumFr": "Medium (French)",
+    "mediumEn": "Medium (English)",
+    "dimensions": "Dimensions",
+    "stock": "Stock",
+    "active": "Active",
+    "sendNewsletter": "Send newsletter",
+    "uploadImage": "Upload image",
+    "submit": "Add print",
+    "notFound": "Product not found",
+    "loading": "Loading...",
+    "clickToZoom": "Click to zoom"
+  },
+  "common": {
+    "welcome": "Welcome to Jeff Gallery",
+    "subtitle": "Discover our selection of quality digital prints",
+    "popular": "Popular digital prints",
+    "newsletter": {
+      "title": "Stay informed",
+      "description": "Subscribe to our newsletter to be notified when a new digital print is added",
+      "subscribe": "Subscribe",
+      "subscribing": "Subscribing...",
+      "success": "Thank you! You are now subscribed to the newsletter.",
+      "error": "An error occurred during subscription."
+    }
+  },
+  "admin": {
+    "title": "Add a digital print",
+    "manageNewsletter": "Manage newsletter",
+    "form": {
+      "required": "This field is required",
+      "imageRequired": "Please select an image",
+      "success": "Digital print added successfully!",
+      "error": "An error occurred while adding"
+    }
+  },
+  "favorites": {
+    "title": "My Favorites",
+    "empty": "You don't have any favorites yet",
+    "discover": "Discover prints",
+    "mustLogin": "You must be logged in to see your favorites"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Create account",
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "noAccount": "Don't have an account yet?",
+    "hasAccount": "Already have an account?",
+    "emailPlaceholder": "Your email address",
+    "passwordPlaceholder": "Password",
+    "namePlaceholder": "Your name",
+    "connect": "Sign in",
+    "passwordMismatch": "Passwords do not match"
+  },
+  "lightbox": {
+    "close": "Close",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "reset": "Reset",
+    "instructions": "Mouse wheel to zoom • Escape to close"
+  }
+}
+

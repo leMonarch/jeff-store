@@ -13,23 +13,30 @@ export interface Favorite {
  * Ajouter un produit aux favoris
  */
 export async function addToFavorites(productId: string): Promise<Favorite> {
-  return apiService.post<Favorite>("/favorites", {
-    productId: parseInt(productId),
-  });
+  // Route favorites n'utilise pas la langue
+  return apiService.post<Favorite>(
+    "/favorites",
+    {
+      productId: parseInt(productId),
+    },
+    false
+  );
 }
 
 /**
  * Retirer un produit des favoris
  */
 export async function removeFromFavorites(productId: string): Promise<void> {
-  return apiService.delete<void>(`/favorites/${productId}`);
+  // Route favorites n'utilise pas la langue
+  return apiService.delete<void>(`/favorites/${productId}`, false);
 }
 
 /**
  * Récupérer tous les favoris de l'utilisateur connecté
  */
 export async function getUserFavorites(): Promise<Favorite[]> {
-  return apiService.get<Favorite[]>("/favorites");
+  // Route favorites n'utilise pas la langue
+  return apiService.get<Favorite[]>("/favorites", false);
 }
 
 /**
@@ -37,8 +44,10 @@ export async function getUserFavorites(): Promise<Favorite[]> {
  */
 export async function isFavorite(productId: string): Promise<boolean> {
   try {
+    // Route favorites n'utilise pas la langue
     const response = await apiService.get<{ isFavorite: boolean }>(
-      `/favorites/check/${productId}`
+      `/favorites/check/${productId}`,
+      false
     );
     return response.isFavorite;
   } catch {

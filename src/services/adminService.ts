@@ -24,14 +24,28 @@ export async function uploadImage(file: File): Promise<string> {
 }
 
 export async function addProduct(
-  productData: Omit<Product, "id">
+  productData: Omit<Product, "id"> & {
+    nameFr: string;
+    nameEn: string;
+    descriptionFr?: string;
+    descriptionEn?: string;
+    categoryFr: string;
+    categoryEn: string;
+    mediumFr?: string;
+    mediumEn?: string;
+  }
 ): Promise<Product> {
-  const product = await apiService.post<Product>("/products", {
-    ...productData,
-    price: typeof productData.price === "string" 
-      ? parseFloat(productData.price) 
-      : productData.price,
-  });
+  // Route POST /products n'utilise pas la langue (création avec toutes les traductions)
+  const product = await apiService.post<Product>(
+    "/products",
+    {
+      ...productData,
+      price: typeof productData.price === "string" 
+        ? parseFloat(productData.price) 
+        : productData.price,
+    },
+    false // Pas de langue pour la création
+  );
   
   // Convertir l'ID numérique en string pour compatibilité
   return {

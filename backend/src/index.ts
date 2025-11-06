@@ -6,6 +6,7 @@ import prisma from "./lib/prisma.js";
 // Routes
 import authRoutes from "./routes/auth.js";
 import productRoutes from "./routes/products.js";
+import productLangRoutes from "./routes/products-lang.js";
 import favoriteRoutes from "./routes/favorites.js";
 import newsletterRoutes from "./routes/newsletter.js";
 import uploadRoutes from "./routes/upload.js";
@@ -32,7 +33,9 @@ app.use("/uploads", express.static("uploads"));
 
 // Routes API
 app.use("/api/auth", authRoutes);
-app.use("/api/products", productRoutes);
+app.use("/api/products", productRoutes); // Route legacy (à garder temporairement)
+app.use("/api/fr", productLangRoutes); // Routes françaises
+app.use("/api/en", productLangRoutes); // Routes anglaises
 app.use("/api/favorites", favoriteRoutes);
 app.use("/api/newsletter", newsletterRoutes);
 app.use("/api/upload", uploadRoutes);
