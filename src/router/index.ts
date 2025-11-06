@@ -20,7 +20,7 @@ const router = createRouter({
       component: FavoritesPage,
       beforeEnter: (_to, _from, next) => {
         const userStore = useUserStore();
-        if (!userStore.user) {
+        if (!userStore.isAuthenticated) {
           next("/login");
         } else {
           next();
@@ -32,9 +32,9 @@ const router = createRouter({
       component: AdminPage,
       beforeEnter: (_to, _from, next) => {
         const userStore = useUserStore();
-        if (!userStore.user) {
+        if (!userStore.isAuthenticated) {
           next("/login");
-        } else if (userStore.userData?.role !== "admin") {
+        } else if (!userStore.isAdmin) {
           next("/");
         } else {
           next();
@@ -46,9 +46,9 @@ const router = createRouter({
       component: NewsletterAdminPage,
       beforeEnter: (_to, _from, next) => {
         const userStore = useUserStore();
-        if (!userStore.user) {
+        if (!userStore.isAuthenticated) {
           next("/login");
-        } else if (userStore.userData?.role !== "admin") {
+        } else if (!userStore.isAdmin) {
           next("/");
         } else {
           next();

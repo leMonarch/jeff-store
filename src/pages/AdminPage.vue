@@ -268,22 +268,8 @@ const success = ref(false);
 
 // Vérifier que l'utilisateur est admin (la vérification principale est dans le router)
 onMounted(() => {
-  console.log("[AdminPage] Vérification des permissions admin");
-  console.log(
-    "[AdminPage] Utilisateur:",
-    userStore.user ? `Connecté (UID: ${userStore.user.uid})` : "Non connecté"
-  );
-  console.log("[AdminPage] Données utilisateur:", userStore.userData);
-  console.log("[AdminPage] Rôle:", userStore.userData?.role);
-  console.log("[AdminPage] Email:", userStore.userData?.email);
-
-  if (!userStore.user || userStore.userData?.role !== "admin") {
-    console.warn(
-      "[AdminPage] Accès refusé - Rôle non admin ou utilisateur non connecté"
-    );
+  if (!userStore.isAuthenticated || !userStore.isAdmin) {
     router.push("/");
-  } else {
-    console.log("[AdminPage] Accès autorisé - Utilisateur admin");
   }
 });
 
@@ -302,14 +288,6 @@ function handleImageChange(event: Event) {
 }
 
 async function handleSubmit() {
-  console.log("[AdminPage] Soumission du formulaire");
-  console.log(
-    "[AdminPage] Données utilisateur avant upload:",
-    userStore.userData
-  );
-  console.log("[AdminPage] Rôle utilisateur:", userStore.userData?.role);
-  console.log("[AdminPage] UID:", userStore.user?.uid);
-
   if (!selectedImage.value) {
     error.value = "Veuillez sélectionner une image";
     return;

@@ -126,7 +126,7 @@
               d'ajouter une impression
             </li>
             <li>
-              L'envoi est géré par Firebase Cloud Functions (peut prendre
+              L'envoi est géré par le serveur Express (peut prendre
               quelques secondes)
             </li>
           </ul>

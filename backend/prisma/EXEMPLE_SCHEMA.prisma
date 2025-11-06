@@ -1,0 +1,79 @@
+// ⚠️ FICHIER D'EXEMPLE - Copiez-le vers schema.prisma et adaptez-le
+
+// ==========================================
+// 1. CONFIGURATION PRISMA
+// ==========================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")  // ← Lit DATABASE_URL depuis .env
+}
+
+// ==========================================
+// 2. MODÈLES (TABLES)
+// ==========================================
+
+model User {
+  id        Int       @id @default(autoincrement())  // Clé primaire auto-incrémentée
+  email     String    @unique                        // Email unique
+  password  String                                   // Mot de passe hashé (bcrypt)
+  name      String?
+  role      String    @default("user")               // "user" ou "admin"
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt                     // Mise à jour automatique
+  
+  // Relations
+  favorites Favorite[]
+}
+
+model Product {
+  id            Int       @id @default(autoincrement())
+  name          String
+  description   String?   @db.Text                    // Texte long pour description
+  price         Decimal   @db.Decimal(10, 2)          // Prix avec 2 décimales
+  imageUrl      String?
+  category      String
+  stock         Int       @default(0)
+  active        Boolean   @default(true)
+  medium        String?
+  dimensions    String?
+  sendNewsletter Boolean  @default(false)             // Newsletter pour ce produit
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Relations
+  favorites     Favorite[]
+}
+
+model Favorite {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  productId Int
+  createdAt DateTime @default(now())
+  
+  // Relations avec User et Product
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  // Un utilisateur ne peut avoir qu'une seule fois le même produit en favori
+  @@unique([userId, productId])
+}
+
+// ==========================================
+// EXPLICATION DES MOTS-CLÉS :
+// ==========================================
+// @id           → Clé primaire
+// @default()    → Valeur par défaut
+// @unique       → Contrainte d'unicité
+// @db.Text      → Type SQL spécifique
+// @db.Decimal() → Décimales précises pour prix
+// @updatedAt    → Mise à jour automatique à chaque modification
+// @relation()   → Lien entre tables
+// onDelete: Cascade → Supprime les favoris si l'utilisateur est supprimé
+// @@unique()    → Contrainte d'unicité sur plusieurs colonnes
+
+

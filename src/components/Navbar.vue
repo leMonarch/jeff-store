@@ -37,7 +37,7 @@
               </span>
             </router-link>
             <span class="text-gray-700">{{
-              userData?.displayName || user.email
+              userData?.name || user.email
             }}</span>
             <button @click="logout" class="text-gray-700 hover:text-blue-600">
               Déconnexion

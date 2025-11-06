@@ -8,8 +8,7 @@ import {
   isFavorite as checkIsFavorite,
 } from "../services/favoritesService";
 import type { Favorite } from "../services/favoritesService";
-import { auth } from "../services/firebase";
-import { onAuthStateChanged } from "firebase/auth";
+import { useUserStore } from "./user";
 
 export const useFavoritesStore = defineStore("favorites", () => {
   const favorites = ref<Favorite[]>([]);
@@ -21,7 +20,8 @@ export const useFavoritesStore = defineStore("favorites", () => {
 
   // Actions
   async function loadFavorites() {
-    if (!auth.currentUser) {
+    const userStore = useUserStore();
+    if (!userStore.isAuthenticated) {
       favorites.value = [];
       favoriteProductIds.value = [];
       return;
@@ -29,9 +29,8 @@ export const useFavoritesStore = defineStore("favorites", () => {
 
     loading.value = true;
     try {
-      const userId = auth.currentUser.uid;
-      favorites.value = await getUserFavorites(userId);
-      favoriteProductIds.value = await getFavoriteProductIds(userId);
+      favorites.value = await getUserFavorites();
+      favoriteProductIds.value = await getFavoriteProductIds();
     } catch (error) {
       console.error(
         "[FavoritesStore] Erreur lors du chargement des favoris:",
@@ -45,7 +44,8 @@ export const useFavoritesStore = defineStore("favorites", () => {
   }
 
   async function toggleFavorite(productId: string): Promise<boolean> {
-    if (!auth.currentUser) {
+    const userStore = useUserStore();
+    if (!userStore.isAuthenticated) {
       throw new Error("Vous devez être connecté pour ajouter aux favoris");
     }
 
@@ -56,7 +56,7 @@ export const useFavoritesStore = defineStore("favorites", () => {
         await removeFromFavorites(productId);
         // Retirer de la liste locale
         favorites.value = favorites.value.filter(
-          (fav) => fav.productId !== productId
+          (fav) => fav.productId.toString() !== productId
         );
         favoriteProductIds.value = favoriteProductIds.value.filter(
           (id) => id !== productId
@@ -81,14 +81,11 @@ export const useFavoritesStore = defineStore("favorites", () => {
 
   // Initialiser le store
   function initialize() {
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        await loadFavorites();
-      } else {
-        favorites.value = [];
-        favoriteProductIds.value = [];
-      }
-    });
+    const userStore = useUserStore();
+    // Charger les favoris si l'utilisateur est connecté
+    if (userStore.isAuthenticated) {
+      loadFavorites();
+    }
   }
 
   return {

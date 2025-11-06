@@ -78,9 +78,11 @@ const productsStore = useProductsStore();
 const user = computed(() => userStore.user);
 
 const favoriteProducts = computed(() => {
-  return productsStore.products.filter((product) =>
-    favoritesStore.favoriteProductIds.includes(product.id)
-  );
+  // Les favoris incluent déjà les produits complets depuis l'API
+  return favoritesStore.favorites.map((fav) => ({
+    ...fav.product,
+    id: fav.product.id.toString(),
+  }));
 });
 
 onMounted(async () => {

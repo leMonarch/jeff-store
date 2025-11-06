@@ -1,0 +1,22 @@
+# Dependencies
+node_modules
+dist
+
+# Environment variables
+.env
+.env.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE
+.vscode
+.idea
+
+# Prisma
+prisma/migrations
+
+# Uploads
+uploads/
+
