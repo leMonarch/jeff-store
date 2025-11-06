@@ -24,7 +24,7 @@ export async function uploadImage(file: File): Promise<string> {
 }
 
 export async function addProduct(
-  productData: Omit<Product, "id"> & {
+  productData: {
     nameFr: string;
     nameEn: string;
     descriptionFr?: string;
@@ -33,6 +33,12 @@ export async function addProduct(
     categoryEn: string;
     mediumFr?: string;
     mediumEn?: string;
+    price: number;
+    imageUrl: string;
+    dimensions?: string;
+    stock?: number;
+    active: boolean;
+    sendNewsletter: boolean;
   }
 ): Promise<Product> {
   // Route POST /products n'utilise pas la langue (création avec toutes les traductions)

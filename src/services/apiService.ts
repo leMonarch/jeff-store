@@ -30,9 +30,9 @@ class ApiService {
     useLanguage: boolean = true
   ): Promise<T> {
     const token = this.getAuthToken();
-    const headers: HeadersInit = {
+    const headers: Record<string, string> = {
       "Content-Type": "application/json",
-      ...options.headers,
+      ...(options.headers as Record<string, string> || {}),
     };
 
     if (token) {
@@ -42,7 +42,7 @@ class ApiService {
     const apiBaseUrl = getApiBaseUrl(useLanguage);
     const response = await fetch(`${apiBaseUrl}${endpoint}`, {
       ...options,
-      headers,
+      headers: headers as HeadersInit,
     });
 
     if (!response.ok) {
@@ -96,7 +96,7 @@ class ApiService {
     const formData = new FormData();
     formData.append("image", file);
 
-    const headers: HeadersInit = {};
+    const headers: Record<string, string> = {};
     if (token) {
       headers["Authorization"] = `Bearer ${token}`;
     }
@@ -105,7 +105,7 @@ class ApiService {
     const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
     const response = await fetch(`${baseUrl}${endpoint}`, {
       method: "POST",
-      headers,
+      headers: headers as HeadersInit,
       body: formData,
     });
 

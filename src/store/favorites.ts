@@ -5,7 +5,6 @@ import {
   getFavoriteProductIds,
   addToFavorites,
   removeFromFavorites,
-  isFavorite as checkIsFavorite,
 } from "../services/favoritesService";
 import type { Favorite } from "../services/favoritesService";
 import { useUserStore } from "./user";

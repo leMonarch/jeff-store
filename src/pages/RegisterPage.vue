@@ -41,7 +41,7 @@
 
           <button
             type="submit"
-            :disabled="passwordMismatch"
+            :disabled="!!passwordMismatch"
             class="btn btn-primary w-full"
           >
             {{ $t('auth.register') }}
